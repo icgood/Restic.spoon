@@ -1,0 +1,127 @@
+[
+  {
+    "Constant" : [
+
+    ],
+    "submodules" : [
+
+    ],
+    "Function" : [
+
+    ],
+    "Variable" : [
+
+    ],
+    "stripped_doc" : [
+
+    ],
+    "type" : "Module",
+    "Deprecated" : [
+
+    ],
+    "desc" : "Manage [restic](https:\/\/restic.github.io\/) backups in the menu bar.",
+    "Constructor" : [
+
+    ],
+    "doc" : "Manage [restic](https:\/\/restic.github.io\/) backups in the menu bar.",
+    "Method" : [
+      {
+        "doc" : "Starts Restic\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
+        "stripped_doc" : [
+          "Starts Restic",
+          ""
+        ],
+        "def" : "Restic:start()",
+        "desc" : "Starts Restic",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:start()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "name" : "start",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "doc" : "Stops Restic\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
+        "stripped_doc" : [
+          "Stops Restic",
+          ""
+        ],
+        "def" : "Restic:stop()",
+        "desc" : "Stops Restic",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:stop()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "name" : "stop",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      }
+    ],
+    "Command" : [
+
+    ],
+    "items" : [
+      {
+        "doc" : "Starts Restic\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
+        "stripped_doc" : [
+          "Starts Restic",
+          ""
+        ],
+        "def" : "Restic:start()",
+        "desc" : "Starts Restic",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:start()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "name" : "start",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "doc" : "Stops Restic\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
+        "stripped_doc" : [
+          "Stops Restic",
+          ""
+        ],
+        "def" : "Restic:stop()",
+        "desc" : "Stops Restic",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:stop()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "name" : "stop",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      }
+    ],
+    "Field" : [
+
+    ],
+    "name" : "Restic"
+  }
+]
