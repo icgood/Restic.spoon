@@ -14,17 +14,24 @@ function obj:refresh()
     end
     local path = self.spoon:getResticPath()
     local env = self.spoon:getResticEnv()
-    self.task = hs.task.new(path, function (exitCode, stdOut, stdErr)
-        locked = false
-        if exitCode == 0 then
-            local json = hs.json.decode(stdOut)
-            self:handleJson(json)
-        else
-            hs.alert.show(stdErr)
-        end
-    end, { "snapshots", "--json" })
+    local complete = function (...) return self:taskComplete(...) end
+    local args = { "snapshots", "--json" }
+    self.task = hs.task.new(path, complete, args)
     self.task:setEnvironment(env)
     self.task:start()
+end
+
+function obj:taskComplete(exitCode, stdOut, stdErr)
+    self.task = nil
+    if exitCode == 0 then
+        local json = hs.json.decode(stdOut)
+        self:handleJson(json)
+    else
+        local output = stdOut .. stdErr
+        if output ~= "" then
+            hs.alert.show(output)
+        end
+    end
 end
 
 function obj:handleJson(json)
