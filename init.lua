@@ -50,7 +50,7 @@ local function getTimeStr(time)
     if time == 0 then
         return "none"
     else
-        return os.date("%b %d, %I:%M %p", latest)
+        return os.date("%b %d, %I:%M %p", time)
     end
 end
 
