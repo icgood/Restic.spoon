@@ -37,9 +37,9 @@ end
 
 local function getSetting(self, name, default)
     local val = self.settings[name]
-    if val then
+    if val ~= nil then
         return val
-    elseif default then
+    elseif default ~= nil then
         return default
     else
         error("Must call :set" .. name .. "() first")
@@ -70,9 +70,15 @@ local function buildMenu(self)
         local timeStr = getTimeStr(self.latestBackup)
         table.insert(menu, { title = "Latest Backup: " .. timeStr, disabled = true })
         table.insert(menu, { title = "-" })
-        if self.percent then
+        if self.backup:active() then
             table.insert(menu, { title = "Stop Backup", fn = function () self:stopBackup() end })
-            table.insert(menu, { title = "Progress: " .. self.percent, disabled = true })
+            if self.elapsed then
+                table.insert(menu, { title = "Elapsed: " .. self.elapsed, disabled = true })
+            end
+            if self.percent then
+                local percentStr = string.format("%.2f%%", self.percent)
+                table.insert(menu, { title = "Percent: " .. percentStr, disabled = true })
+            end
         else
             table.insert(menu, { title = "Backup Now", fn = function () self:startBackup() end })
         end
@@ -137,12 +143,16 @@ end
 --- Returns:
 ---  * The Restic object
 function obj:setResticPath(path)
-    self.log.df("set restic path to %q", path)
-    return setSetting(self, "ResticPath", path)
+    local absPath = hs.fs.pathToAbsolute(path)
+    if not absPath then
+        error("Path does not exist: " .. path)
+    end
+    self.log.df("set restic path to %q", absPath)
+    return setSetting(self, "ResticPath", absPath)
 end
 
 function obj:getResticPath()
-    return getSetting(self, "ResticPath", "/usr/local/bin/restic")
+    return getSetting(self, "ResticPath", "restic")
 end
 
 --- Restic:setRepository()
@@ -228,6 +238,14 @@ end
 --- Returns:
 ---  * The Restic object
 function obj:setBackupDirs(directories)
+    for i, path in ipairs(directories) do
+        local absPath = hs.fs.pathToAbsolute(path)
+        if not absPath then
+            error("Path does not exist: " .. path)
+        elseif absPath ~= path then
+            directories[i] = absPath
+        end
+    end
     self.log.df("set backup directories to %s", table.concat(directories, ", "))
     return setSetting(self, "BackupDirs", directories)
 end
@@ -235,6 +253,24 @@ end
 function obj:getBackupDirs()
     local home = hs.fs.pathToAbsolute("~")
     return getSetting(self, "BackupDirs", { home })
+end
+
+--- Restic:setSudo()
+--- Method
+--- Specifies whether sudo should be used for restic backups
+---
+--- Parameters:
+---  * required - true to require administrator privileges
+---
+--- Returns:
+---  * The Restic object
+function obj:setSudo(required)
+    self.log.df("set sudo usage to %s", required)
+    return setSetting(self, "Sudo", required)
+end
+
+function obj:getSudo()
+    return getSetting(self, "Sudo", false)
 end
 
 --- Restic:createRepo()
@@ -291,28 +327,33 @@ end
 --- Returns:
 ---  * None
 function obj:showBackupLog()
-    self.backup:showLog()
-end
-
-function obj:refreshLatestBackup()
-    self.snapshots:refresh()
-end
-
-function obj:updateLatestBackup(latest)
-    self.latestBackup = latest
-end
-
-function obj:updateProgress(percent)
-    self.menuBarItem:setTitle(percent)
-    if percent then
-        self.percent = percent
+    local log = self.backup:getLog()
+    if log and log ~= "" then
+        local task = hs.task.new("/usr/bin/open", nil, { "-f" })
+        task:setInput(log)
+        task:start()
     else
-        self.percent = nil
-        self.snapshots:refresh()
+        self:warn("No backup logs available")
     end
 end
 
-function obj:buildResticEnv()
+function obj:refreshLatestBackup()
+    self.snapshots:refresh(function (val)
+        self.latestBackup = val
+    end)
+end
+
+function obj:updateProgress(elapsed, percent)
+    self.elapsed = elapsed
+    self.percent = percent
+    if percent then
+        self.menuBarItem:setTitle(string.format("%.0f%%", percent))
+    else
+        self.menuBarItem:setTitle(nil)
+    end
+end
+
+local function buildResticEnv(self)
     local env = {
         RESTIC_REPOSITORY = self:getRepository(),
         RESTIC_PASSWORD = self:getPassword(),
@@ -324,6 +365,38 @@ function obj:buildResticEnv()
         error("Must call :setS3Credentials() first")
     end
     return env
+end
+
+local function quote(str)
+    str = string.gsub(str, [[%\]], [[\\]])
+    str = string.gsub(str, [[%"]], [[\"]])
+    return [["]] .. str .. [["]]
+end
+
+local function join(list)
+    return table.concat(list, " ")
+end
+
+function obj:newResticTask(command, args, onComplete, onOutput)
+    local restic = self:getResticPath()
+    local shell
+    if command.canSudo and self:getSudo() then
+        shell = { "sudo", "-A", restic, command.name }
+    else
+        shell = { restic, command.name }
+    end
+    for i, arg in ipairs(args) do
+        table.insert(shell, quote(arg))
+    end
+
+    local task
+    if onOutput then
+        task = hs.task.new("/bin/sh", onComplete, onOutput, { "-c", join(shell) })
+    else
+        task = hs.task.new("/bin/sh", onComplete, { "-c", join(shell) })
+    end
+    task:setEnvironment(buildResticEnv(self))
+    return task
 end
 
 function obj:warn(msg, ...)

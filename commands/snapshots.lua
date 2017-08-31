@@ -1,5 +1,5 @@
 
-local obj = { command = "restic snapshots" }
+local obj = { name = "snapshots" }
 obj.__index = obj
 
 local TIME_PATTERN = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
@@ -10,32 +10,34 @@ function obj.new(spoon, log)
     return self
 end
 
-function obj:refresh()
-    if self.task then
+function obj:refresh(callback)
+    if self:active() then
         return
     end
-    local path = self.spoon:getResticPath()
-    local env = self.spoon:buildResticEnv()
-    local complete = function (...) return self:taskComplete(...) end
-    self.task = hs.task.new(path, complete, { "snapshots", "--json" })
-    self.task:setEnvironment(env)
+    local args = { "--json" }
+    local onComplete = function (...) return self:onTaskComplete(callback, ...) end
+    self.task = self.spoon:newResticTask(self, args, onComplete)
     self.task:start()
-    self.log.df("%q started", obj.command)
+    self.log.df("restic %s started", obj.name)
 end
 
-function obj:taskComplete(exitCode, stdOut, stdErr)
+function obj:active()
+    return self.task ~= nil
+end
+
+function obj:onTaskComplete(callback, exitCode, stdOut, stdErr)
     self.task = nil
-    self.log.df("%q exited with code %s", obj.command, exitCode)
+    self.log.df("restic %s exited with code %s", obj.name, exitCode)
     if exitCode == 0 then
         local json = hs.json.decode(stdOut) or {}
-        self:handleJson(json)
+        self:handleJson(callback, json)
     else
         self.spoon:warn(stdOut .. stdErr)
-        self.spoon:updateLatestBackup("failure")
+        callback("failure")
     end
 end
 
-function obj:handleJson(json)
+function obj:handleJson(callback, json)
     local latest = 0
     for i, snapshot in ipairs(json) do
         local xyear, xmonth, xday, xhour, xminute, xseconds, xmillies, xoffset =
@@ -48,7 +50,7 @@ function obj:handleJson(json)
         end
     end
     self.log.df("found most recent snapshot at %s", latest)
-    self.spoon:updateLatestBackup(latest)
+    callback(latest)
 end
 
 return obj

@@ -1,5 +1,5 @@
 
-local obj = { command = "restic init" }
+local obj = { name = "init" }
 obj.__index = obj
 
 function obj.new(spoon, log)
@@ -9,21 +9,22 @@ function obj.new(spoon, log)
 end
 
 function obj:create()
-    if self.task then
+    if self:active() then
         return
     end
-    local path = self.spoon:getResticPath()
-    local env = self.spoon:buildResticEnv()
-    local complete = function (...) return self:taskComplete(...) end
-    self.task = hs.task.new(path, complete, { "init" })
-    self.task:setEnvironment(env)
+    local onComplete = function (...) return self:onTaskComplete(...) end
+    self.task = self.spoon:newResticTask(self, {}, onComplete)
     self.task:start()
-    self.log.df("%q started", obj.command)
+    self.log.df("restic %s started", obj.name)
 end
 
-function obj:taskComplete(exitCode, stdOut, stdErr)
+function obj:active()
+    return self.task ~= nil
+end
+
+function obj:onTaskComplete(exitCode, stdOut, stdErr)
     self.task = nil
-    self.log.df("%q exited with code %s", obj.command, exitCode)
+    self.log.df("restic %s exited with code %s", obj.name, exitCode)
     if exitCode == 0 then
         self.spoon:refreshLatestBackup()
     else
