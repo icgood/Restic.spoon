@@ -15,15 +15,17 @@
     "stripped_doc" : [
 
     ],
+    "type" : "Module",
     "Deprecated" : [
 
     ],
-    "type" : "Module",
     "desc" : "Manage [restic](https:\/\/restic.github.io\/) backups in the menu bar.",
     "Constructor" : [
 
     ],
-    "doc" : "Manage [restic](https:\/\/restic.github.io\/) backups in the menu bar.",
+    "Field" : [
+
+    ],
     "Method" : [
       {
         "doc" : "Starts Restic\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
@@ -249,6 +251,50 @@
         ]
       },
       {
+        "doc" : "Saves the current settings to a file\n\nParameters:\n * filename - path to settings file, defaults to `~\/.restic.spoon`\n\nReturns:\n * The Restic object",
+        "stripped_doc" : [
+          "Saves the current settings to a file",
+          ""
+        ],
+        "def" : "Restic:saveSettings()",
+        "name" : "saveSettings",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:saveSettings()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "desc" : "Saves the current settings to a file",
+        "parameters" : [
+          " * filename - path to settings file, defaults to `~\/.restic.spoon`",
+          ""
+        ]
+      },
+      {
+        "doc" : "Loads settings from a file\n\nParameters:\n * filename - path to settings file, defaults to `~\/.restic.spoon`\n\nReturns:\n * The Restic object",
+        "stripped_doc" : [
+          "Loads settings from a file",
+          ""
+        ],
+        "def" : "Restic:loadSettings()",
+        "name" : "loadSettings",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:loadSettings()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "desc" : "Loads settings from a file",
+        "parameters" : [
+          " * filename - path to settings file, defaults to `~\/.restic.spoon`",
+          ""
+        ]
+      },
+      {
         "doc" : "Initializes a new restic repository with `restic init`\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
         "stripped_doc" : [
           "Initializes a new restic repository with `restic init`",
@@ -340,9 +386,7 @@
     "Command" : [
 
     ],
-    "Field" : [
-
-    ],
+    "doc" : "Manage [restic](https:\/\/restic.github.io\/) backups in the menu bar.",
     "items" : [
       {
         "doc" : "Initializes a new restic repository with `restic init`\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
@@ -363,6 +407,50 @@
         "desc" : "Initializes a new restic repository with `restic init`",
         "parameters" : [
           " * None",
+          ""
+        ]
+      },
+      {
+        "doc" : "Loads settings from a file\n\nParameters:\n * filename - path to settings file, defaults to `~\/.restic.spoon`\n\nReturns:\n * The Restic object",
+        "stripped_doc" : [
+          "Loads settings from a file",
+          ""
+        ],
+        "def" : "Restic:loadSettings()",
+        "name" : "loadSettings",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:loadSettings()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "desc" : "Loads settings from a file",
+        "parameters" : [
+          " * filename - path to settings file, defaults to `~\/.restic.spoon`",
+          ""
+        ]
+      },
+      {
+        "doc" : "Saves the current settings to a file\n\nParameters:\n * filename - path to settings file, defaults to `~\/.restic.spoon`\n\nReturns:\n * The Restic object",
+        "stripped_doc" : [
+          "Saves the current settings to a file",
+          ""
+        ],
+        "def" : "Restic:saveSettings()",
+        "name" : "saveSettings",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:saveSettings()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "desc" : "Saves the current settings to a file",
+        "parameters" : [
+          " * filename - path to settings file, defaults to `~\/.restic.spoon`",
           ""
         ]
       },

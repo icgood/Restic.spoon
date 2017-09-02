@@ -98,6 +98,7 @@ end
 
 function obj:init()
     self.settings = {}
+    self:loadSettings(nil, true)
 
     self.blackIcon, self.redIcon = getIcons()
     self.log = hs.logger.new(obj.name)
@@ -308,6 +309,52 @@ end
 
 function obj:getReminderDelay()
     return getSetting(self, "ReminderDelay", 10)
+end
+
+--- Restic:saveSettings()
+--- Method
+--- Saves the current settings to a file
+---
+--- Parameters:
+---  * filename - path to settings file, defaults to `~/.restic.spoon`
+---
+--- Returns:
+---  * The Restic object
+function obj:saveSettings(filename)
+    if not filename then
+        filename = hs.fs.pathToAbsolute("~") .. "/.restic.spoon"
+    end
+    local write = hs.json.encode(self.settings, true)
+    local file, err = io.open(filename, "w")
+    if not file then
+        error(err)
+    end
+    file:write(write)
+    file:close()
+    return self
+end
+
+--- Restic:loadSettings()
+--- Method
+--- Loads settings from a file
+---
+--- Parameters:
+---  * filename - path to settings file, defaults to `~/.restic.spoon`
+---
+--- Returns:
+---  * The Restic object
+function obj:loadSettings(filename, noPanic)
+    if not filename then
+        filename = hs.fs.pathToAbsolute("~") .. "/.restic.spoon"
+    end
+    local file, err = io.open(filename, "r")
+    if not file and not noPanic then
+        error(err)
+    end
+    local json = file:read("a")
+    file:close()
+    self.settings = hs.json.decode(json)
+    return self
 end
 
 --- Restic:createRepo()

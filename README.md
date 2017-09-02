@@ -8,6 +8,8 @@ Install the spoon with:
 git clone https://github.com/icgood/Restic.spoon.git ~/.hammerspoon/Spoons/Restic.spoon
 ```
 
+### Configuration
+
 Update your `~/.hammerspoon/init.lua` with the following:
 
 ```lua
@@ -19,3 +21,19 @@ spoon.Restic:start()
 ```
 
 Finally, reload your Hammerspoon config to see Restic.spoon in the menubar.
+
+#### Save/Load
+
+Once you have a working configuration, save them to `~/restic.spoon` from the
+Hammerspoon console:
+
+```lua
+spoon.Restic:saveSettings()
+```
+
+You can then modify your `~/.hammerspoon/init.lua` script and replace all of
+the spoon initialization with:
+
+```lua
+hs.loadSpoon("Restic"):start()
+```
