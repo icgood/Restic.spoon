@@ -4,19 +4,19 @@ obj.__index = obj
 
 local TIME_PATTERN = "(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)"
 
-function obj.new(spoon, log)
-    local self = { spoon = spoon, log = log }
+function obj.new(spoon, callback)
+    local self = { spoon = spoon, log = spoon.log, exec = spoon.exec, callback = callback }
     setmetatable(self, obj)
     return self
 end
 
-function obj:refresh(callback)
+function obj:start()
     if self:active() then
         return
     end
-    local args = { "--json" }
-    local onComplete = function (...) return self:onTaskComplete(callback, ...) end
-    self.task = self.spoon:newResticTask(self, args, onComplete)
+    local args = { obj.name, "--json" }
+    local onComplete = function (...) return self:onTaskComplete(...) end
+    self.task = self.exec:newResticTask(args, onComplete)
     self.task:start()
     self.log.df("restic %s started", obj.name)
 end
@@ -25,19 +25,25 @@ function obj:active()
     return self.task ~= nil
 end
 
-function obj:onTaskComplete(callback, exitCode, stdOut, stdErr)
+function obj:stop()
+    if self:active() and self.task:isRunning() then
+        self.task:terminate()
+    end
+end
+
+function obj:onTaskComplete(exitCode, stdOut, stdErr)
     self.task = nil
     self.log.df("restic %s exited with code %s", obj.name, exitCode)
     if exitCode == 0 then
         local json = hs.json.decode(stdOut) or {}
-        self:handleJson(callback, json)
+        self:handleJson(json)
     else
         self.spoon:warn(stdOut .. stdErr)
-        callback("failure")
+        self.callback("failure")
     end
 end
 
-function obj:handleJson(callback, json)
+function obj:handleJson(json)
     local latest = 0
     for i, snapshot in ipairs(json) do
         local xyear, xmonth, xday, xhour, xminute, xseconds, xmillies, xoffset =
@@ -50,7 +56,7 @@ function obj:handleJson(callback, json)
         end
     end
     self.log.df("found most recent snapshot at %s", latest)
-    callback(latest)
+    self.callback(latest)
 end
 
 return obj

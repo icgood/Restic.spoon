@@ -16,23 +16,23 @@
 
     ],
     "desc" : "Manage [restic](https:\/\/restic.github.io\/) backups in the menu bar.",
+    "type" : "Module",
     "Deprecated" : [
 
     ],
-    "type" : "Module",
     "Constructor" : [
 
     ],
     "doc" : "Manage [restic](https:\/\/restic.github.io\/) backups in the menu bar.",
     "Method" : [
       {
-        "name" : "start",
+        "desc" : "Starts Restic",
+        "def" : "Restic:start()",
         "stripped_doc" : [
           "Starts Restic",
           ""
         ],
         "doc" : "Starts Restic\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
-        "def" : "Restic:start()",
         "notes" : [
 
         ],
@@ -41,20 +41,20 @@
         "returns" : [
           " * The Restic object"
         ],
-        "desc" : "Starts Restic",
+        "name" : "start",
         "parameters" : [
           " * None",
           ""
         ]
       },
       {
-        "name" : "stop",
+        "desc" : "Stops Restic",
+        "def" : "Restic:stop()",
         "stripped_doc" : [
           "Stops Restic",
           ""
         ],
         "doc" : "Stops Restic\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
-        "def" : "Restic:stop()",
         "notes" : [
 
         ],
@@ -63,20 +63,20 @@
         "returns" : [
           " * The Restic object"
         ],
-        "desc" : "Stops Restic",
+        "name" : "stop",
         "parameters" : [
           " * None",
           ""
         ]
       },
       {
-        "name" : "setResticPath",
+        "desc" : "Specifies the full path to the restic executable",
+        "def" : "Restic:setResticPath()",
         "stripped_doc" : [
           "Specifies the full path to the restic executable",
           ""
         ],
         "doc" : "Specifies the full path to the restic executable\n\nParameters:\n * path - a string containing the full path\n\nReturns:\n * The Restic object",
-        "def" : "Restic:setResticPath()",
         "notes" : [
 
         ],
@@ -85,21 +85,21 @@
         "returns" : [
           " * The Restic object"
         ],
-        "desc" : "Specifies the full path to the restic executable",
+        "name" : "setResticPath",
         "parameters" : [
           " * path - a string containing the full path",
           ""
         ]
       },
       {
-        "name" : "setRepository",
+        "desc" : "Specifies the restic repository string, as described in",
+        "def" : "Restic:setRepository()",
         "stripped_doc" : [
           "Specifies the restic repository string, as described in",
           "[the documentation(https:\/\/restic.readthedocs.io\/en\/stable\/manual.html#initialize-a-repository)",
           ""
         ],
         "doc" : "Specifies the restic repository string, as described in\n[the documentation(https:\/\/restic.readthedocs.io\/en\/stable\/manual.html#initialize-a-repository)\n\nParameters:\n * repo - a string containing the repository info\n\nReturns:\n * The Restic object",
-        "def" : "Restic:setRepository()",
         "notes" : [
 
         ],
@@ -108,20 +108,20 @@
         "returns" : [
           " * The Restic object"
         ],
-        "desc" : "Specifies the restic repository string, as described in",
+        "name" : "setRepository",
         "parameters" : [
           " * repo - a string containing the repository info",
           ""
         ]
       },
       {
-        "name" : "setPassword",
+        "desc" : "Specifies the restic repository password",
+        "def" : "Restic:setPassword()",
         "stripped_doc" : [
           "Specifies the restic repository password",
           ""
         ],
         "doc" : "Specifies the restic repository password\n\nParameters:\n * password - a string containing the repository password\n\nReturns:\n * The Restic object",
-        "def" : "Restic:setPassword()",
         "notes" : [
 
         ],
@@ -130,21 +130,21 @@
         "returns" : [
           " * The Restic object"
         ],
-        "desc" : "Specifies the restic repository password",
+        "name" : "setPassword",
         "parameters" : [
           " * password - a string containing the repository password",
           ""
         ]
       },
       {
-        "name" : "setEnvironment",
+        "desc" : "Specifies the environment variables for executing restic, including any",
+        "def" : "Restic:setEnvironment()",
         "stripped_doc" : [
           "Specifies the environment variables for executing restic, including any",
           "necessary credentials for remote repositories such as S3",
           ""
         ],
         "doc" : "Specifies the environment variables for executing restic, including any\nnecessary credentials for remote repositories such as S3\n\nParameters:\n * env - table of environment variables\n\nReturns:\n * The Restic object",
-        "def" : "Restic:setEnvironment()",
         "notes" : [
 
         ],
@@ -153,20 +153,20 @@
         "returns" : [
           " * The Restic object"
         ],
-        "desc" : "Specifies the environment variables for executing restic, including any",
+        "name" : "setEnvironment",
         "parameters" : [
           " * env - table of environment variables",
           ""
         ]
       },
       {
-        "name" : "setS3Credentials",
+        "desc" : "Specifies the S3 credentials used when remote repositories of that type",
+        "def" : "Restic:setS3Credentials()",
         "stripped_doc" : [
           "Specifies the S3 credentials used when remote repositories of that type",
           ""
         ],
         "doc" : "Specifies the S3 credentials used when remote repositories of that type\n\nParameters:\n * accessKey - string of the S3 access key\n * secretKey - string of the S3 secret key\n\nReturns:\n * The Restic object",
-        "def" : "Restic:setS3Credentials()",
         "notes" : [
 
         ],
@@ -175,7 +175,7 @@
         "returns" : [
           " * The Restic object"
         ],
-        "desc" : "Specifies the S3 credentials used when remote repositories of that type",
+        "name" : "setS3Credentials",
         "parameters" : [
           " * accessKey - string of the S3 access key",
           " * secretKey - string of the S3 secret key",
@@ -183,13 +183,13 @@
         ]
       },
       {
-        "name" : "setBackupDirs",
+        "desc" : "Specifies the directories to backup",
+        "def" : "Restic:setBackupDirs()",
         "stripped_doc" : [
           "Specifies the directories to backup",
           ""
         ],
-        "doc" : "Specifies the directories to backup\n\nParameters:\n * directories - table array of full directory paths\n\nReturns:\n * The Restic object",
-        "def" : "Restic:setBackupDirs()",
+        "doc" : "Specifies the directories to backup\n\nParameters:\n * ... - one or more directory paths\n\nReturns:\n * The Restic object",
         "notes" : [
 
         ],
@@ -198,64 +198,64 @@
         "returns" : [
           " * The Restic object"
         ],
-        "desc" : "Specifies the directories to backup",
+        "name" : "setBackupDirs",
         "parameters" : [
-          " * directories - table array of full directory paths",
+          " * ... - one or more directory paths",
           ""
         ]
       },
       {
-        "name" : "setSudo",
+        "desc" : "Specifies the patterns to exclude from backup",
+        "def" : "Restic:setExclusionPatterns()",
         "stripped_doc" : [
-          "Specifies whether sudo should be used for restic backups",
+          "Specifies the patterns to exclude from backup",
           ""
         ],
-        "doc" : "Specifies whether sudo should be used for restic backups\n\nParameters:\n * required - true to require administrator privileges\n\nReturns:\n * The Restic object",
-        "def" : "Restic:setSudo()",
+        "doc" : "Specifies the patterns to exclude from backup\n\nParameters:\n * ... - one or more exclusion patterns\n\nReturns:\n * The Restic object",
         "notes" : [
 
         ],
-        "signature" : "Restic:setSudo()",
+        "signature" : "Restic:setExclusionPatterns()",
         "type" : "Method",
         "returns" : [
           " * The Restic object"
         ],
-        "desc" : "Specifies whether sudo should be used for restic backups",
+        "name" : "setExclusionPatterns",
         "parameters" : [
-          " * required - true to require administrator privileges",
+          " * ... - one or more exclusion patterns",
           ""
         ]
       },
       {
-        "name" : "createRepo",
+        "desc" : "Initializes a new restic repository with `restic init`",
+        "def" : "Restic:createRepo()",
         "stripped_doc" : [
           "Initializes a new restic repository with `restic init`",
           ""
         ],
-        "doc" : "Initializes a new restic repository with `restic init`\n\nParameters:\n * None\n\nReturns:\n * None",
-        "def" : "Restic:createRepo()",
+        "doc" : "Initializes a new restic repository with `restic init`\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
         "notes" : [
 
         ],
         "signature" : "Restic:createRepo()",
         "type" : "Method",
         "returns" : [
-          " * None"
+          " * The Restic object"
         ],
-        "desc" : "Initializes a new restic repository with `restic init`",
+        "name" : "createRepo",
         "parameters" : [
           " * None",
           ""
         ]
       },
       {
-        "name" : "startBackup",
+        "desc" : "Begins a new restic backup",
+        "def" : "Restic:startBackup()",
         "stripped_doc" : [
           "Begins a new restic backup",
           ""
         ],
         "doc" : "Begins a new restic backup\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
-        "def" : "Restic:startBackup()",
         "notes" : [
 
         ],
@@ -264,20 +264,20 @@
         "returns" : [
           " * The Restic object"
         ],
-        "desc" : "Begins a new restic backup",
+        "name" : "startBackup",
         "parameters" : [
           " * None",
           ""
         ]
       },
       {
-        "name" : "stopBackup",
+        "desc" : "Stops the currently-running restic backup",
+        "def" : "Restic:stopBackup()",
         "stripped_doc" : [
           "Stops the currently-running restic backup",
           ""
         ],
         "doc" : "Stops the currently-running restic backup\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
-        "def" : "Restic:stopBackup()",
         "notes" : [
 
         ],
@@ -286,20 +286,20 @@
         "returns" : [
           " * The Restic object"
         ],
-        "desc" : "Stops the currently-running restic backup",
+        "name" : "stopBackup",
         "parameters" : [
           " * None",
           ""
         ]
       },
       {
-        "name" : "showBackupLog",
+        "desc" : "Shows the current contents of the backup log in TextEdit",
+        "def" : "Restic:showBackupLog()",
         "stripped_doc" : [
           "Shows the current contents of the backup log in TextEdit",
           ""
         ],
         "doc" : "Shows the current contents of the backup log in TextEdit\n\nParameters:\n * None\n\nReturns:\n * None",
-        "def" : "Restic:showBackupLog()",
         "notes" : [
 
         ],
@@ -308,7 +308,301 @@
         "returns" : [
           " * None"
         ],
+        "name" : "showBackupLog",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      }
+    ],
+    "Field" : [
+
+    ],
+    "items" : [
+      {
+        "desc" : "Initializes a new restic repository with `restic init`",
+        "def" : "Restic:createRepo()",
+        "stripped_doc" : [
+          "Initializes a new restic repository with `restic init`",
+          ""
+        ],
+        "doc" : "Initializes a new restic repository with `restic init`\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:createRepo()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "name" : "createRepo",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "desc" : "Specifies the directories to backup",
+        "def" : "Restic:setBackupDirs()",
+        "stripped_doc" : [
+          "Specifies the directories to backup",
+          ""
+        ],
+        "doc" : "Specifies the directories to backup\n\nParameters:\n * ... - one or more directory paths\n\nReturns:\n * The Restic object",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:setBackupDirs()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "name" : "setBackupDirs",
+        "parameters" : [
+          " * ... - one or more directory paths",
+          ""
+        ]
+      },
+      {
+        "desc" : "Specifies the environment variables for executing restic, including any",
+        "def" : "Restic:setEnvironment()",
+        "stripped_doc" : [
+          "Specifies the environment variables for executing restic, including any",
+          "necessary credentials for remote repositories such as S3",
+          ""
+        ],
+        "doc" : "Specifies the environment variables for executing restic, including any\nnecessary credentials for remote repositories such as S3\n\nParameters:\n * env - table of environment variables\n\nReturns:\n * The Restic object",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:setEnvironment()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "name" : "setEnvironment",
+        "parameters" : [
+          " * env - table of environment variables",
+          ""
+        ]
+      },
+      {
+        "desc" : "Specifies the patterns to exclude from backup",
+        "def" : "Restic:setExclusionPatterns()",
+        "stripped_doc" : [
+          "Specifies the patterns to exclude from backup",
+          ""
+        ],
+        "doc" : "Specifies the patterns to exclude from backup\n\nParameters:\n * ... - one or more exclusion patterns\n\nReturns:\n * The Restic object",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:setExclusionPatterns()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "name" : "setExclusionPatterns",
+        "parameters" : [
+          " * ... - one or more exclusion patterns",
+          ""
+        ]
+      },
+      {
+        "desc" : "Specifies the restic repository password",
+        "def" : "Restic:setPassword()",
+        "stripped_doc" : [
+          "Specifies the restic repository password",
+          ""
+        ],
+        "doc" : "Specifies the restic repository password\n\nParameters:\n * password - a string containing the repository password\n\nReturns:\n * The Restic object",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:setPassword()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "name" : "setPassword",
+        "parameters" : [
+          " * password - a string containing the repository password",
+          ""
+        ]
+      },
+      {
+        "desc" : "Specifies the restic repository string, as described in",
+        "def" : "Restic:setRepository()",
+        "stripped_doc" : [
+          "Specifies the restic repository string, as described in",
+          "[the documentation(https:\/\/restic.readthedocs.io\/en\/stable\/manual.html#initialize-a-repository)",
+          ""
+        ],
+        "doc" : "Specifies the restic repository string, as described in\n[the documentation(https:\/\/restic.readthedocs.io\/en\/stable\/manual.html#initialize-a-repository)\n\nParameters:\n * repo - a string containing the repository info\n\nReturns:\n * The Restic object",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:setRepository()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "name" : "setRepository",
+        "parameters" : [
+          " * repo - a string containing the repository info",
+          ""
+        ]
+      },
+      {
+        "desc" : "Specifies the full path to the restic executable",
+        "def" : "Restic:setResticPath()",
+        "stripped_doc" : [
+          "Specifies the full path to the restic executable",
+          ""
+        ],
+        "doc" : "Specifies the full path to the restic executable\n\nParameters:\n * path - a string containing the full path\n\nReturns:\n * The Restic object",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:setResticPath()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "name" : "setResticPath",
+        "parameters" : [
+          " * path - a string containing the full path",
+          ""
+        ]
+      },
+      {
+        "desc" : "Specifies the S3 credentials used when remote repositories of that type",
+        "def" : "Restic:setS3Credentials()",
+        "stripped_doc" : [
+          "Specifies the S3 credentials used when remote repositories of that type",
+          ""
+        ],
+        "doc" : "Specifies the S3 credentials used when remote repositories of that type\n\nParameters:\n * accessKey - string of the S3 access key\n * secretKey - string of the S3 secret key\n\nReturns:\n * The Restic object",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:setS3Credentials()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "name" : "setS3Credentials",
+        "parameters" : [
+          " * accessKey - string of the S3 access key",
+          " * secretKey - string of the S3 secret key",
+          ""
+        ]
+      },
+      {
         "desc" : "Shows the current contents of the backup log in TextEdit",
+        "def" : "Restic:showBackupLog()",
+        "stripped_doc" : [
+          "Shows the current contents of the backup log in TextEdit",
+          ""
+        ],
+        "doc" : "Shows the current contents of the backup log in TextEdit\n\nParameters:\n * None\n\nReturns:\n * None",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:showBackupLog()",
+        "type" : "Method",
+        "returns" : [
+          " * None"
+        ],
+        "name" : "showBackupLog",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "desc" : "Starts Restic",
+        "def" : "Restic:start()",
+        "stripped_doc" : [
+          "Starts Restic",
+          ""
+        ],
+        "doc" : "Starts Restic\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:start()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "name" : "start",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "desc" : "Begins a new restic backup",
+        "def" : "Restic:startBackup()",
+        "stripped_doc" : [
+          "Begins a new restic backup",
+          ""
+        ],
+        "doc" : "Begins a new restic backup\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:startBackup()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "name" : "startBackup",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "desc" : "Stops Restic",
+        "def" : "Restic:stop()",
+        "stripped_doc" : [
+          "Stops Restic",
+          ""
+        ],
+        "doc" : "Stops Restic\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:stop()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "name" : "stop",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "desc" : "Stops the currently-running restic backup",
+        "def" : "Restic:stopBackup()",
+        "stripped_doc" : [
+          "Stops the currently-running restic backup",
+          ""
+        ],
+        "doc" : "Stops the currently-running restic backup\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
+        "notes" : [
+
+        ],
+        "signature" : "Restic:stopBackup()",
+        "type" : "Method",
+        "returns" : [
+          " * The Restic object"
+        ],
+        "name" : "stopBackup",
         "parameters" : [
           " * None",
           ""
@@ -317,300 +611,6 @@
     ],
     "Command" : [
 
-    ],
-    "Field" : [
-
-    ],
-    "items" : [
-      {
-        "name" : "createRepo",
-        "stripped_doc" : [
-          "Initializes a new restic repository with `restic init`",
-          ""
-        ],
-        "doc" : "Initializes a new restic repository with `restic init`\n\nParameters:\n * None\n\nReturns:\n * None",
-        "def" : "Restic:createRepo()",
-        "notes" : [
-
-        ],
-        "signature" : "Restic:createRepo()",
-        "type" : "Method",
-        "returns" : [
-          " * None"
-        ],
-        "desc" : "Initializes a new restic repository with `restic init`",
-        "parameters" : [
-          " * None",
-          ""
-        ]
-      },
-      {
-        "name" : "setBackupDirs",
-        "stripped_doc" : [
-          "Specifies the directories to backup",
-          ""
-        ],
-        "doc" : "Specifies the directories to backup\n\nParameters:\n * directories - table array of full directory paths\n\nReturns:\n * The Restic object",
-        "def" : "Restic:setBackupDirs()",
-        "notes" : [
-
-        ],
-        "signature" : "Restic:setBackupDirs()",
-        "type" : "Method",
-        "returns" : [
-          " * The Restic object"
-        ],
-        "desc" : "Specifies the directories to backup",
-        "parameters" : [
-          " * directories - table array of full directory paths",
-          ""
-        ]
-      },
-      {
-        "name" : "setEnvironment",
-        "stripped_doc" : [
-          "Specifies the environment variables for executing restic, including any",
-          "necessary credentials for remote repositories such as S3",
-          ""
-        ],
-        "doc" : "Specifies the environment variables for executing restic, including any\nnecessary credentials for remote repositories such as S3\n\nParameters:\n * env - table of environment variables\n\nReturns:\n * The Restic object",
-        "def" : "Restic:setEnvironment()",
-        "notes" : [
-
-        ],
-        "signature" : "Restic:setEnvironment()",
-        "type" : "Method",
-        "returns" : [
-          " * The Restic object"
-        ],
-        "desc" : "Specifies the environment variables for executing restic, including any",
-        "parameters" : [
-          " * env - table of environment variables",
-          ""
-        ]
-      },
-      {
-        "name" : "setPassword",
-        "stripped_doc" : [
-          "Specifies the restic repository password",
-          ""
-        ],
-        "doc" : "Specifies the restic repository password\n\nParameters:\n * password - a string containing the repository password\n\nReturns:\n * The Restic object",
-        "def" : "Restic:setPassword()",
-        "notes" : [
-
-        ],
-        "signature" : "Restic:setPassword()",
-        "type" : "Method",
-        "returns" : [
-          " * The Restic object"
-        ],
-        "desc" : "Specifies the restic repository password",
-        "parameters" : [
-          " * password - a string containing the repository password",
-          ""
-        ]
-      },
-      {
-        "name" : "setRepository",
-        "stripped_doc" : [
-          "Specifies the restic repository string, as described in",
-          "[the documentation(https:\/\/restic.readthedocs.io\/en\/stable\/manual.html#initialize-a-repository)",
-          ""
-        ],
-        "doc" : "Specifies the restic repository string, as described in\n[the documentation(https:\/\/restic.readthedocs.io\/en\/stable\/manual.html#initialize-a-repository)\n\nParameters:\n * repo - a string containing the repository info\n\nReturns:\n * The Restic object",
-        "def" : "Restic:setRepository()",
-        "notes" : [
-
-        ],
-        "signature" : "Restic:setRepository()",
-        "type" : "Method",
-        "returns" : [
-          " * The Restic object"
-        ],
-        "desc" : "Specifies the restic repository string, as described in",
-        "parameters" : [
-          " * repo - a string containing the repository info",
-          ""
-        ]
-      },
-      {
-        "name" : "setResticPath",
-        "stripped_doc" : [
-          "Specifies the full path to the restic executable",
-          ""
-        ],
-        "doc" : "Specifies the full path to the restic executable\n\nParameters:\n * path - a string containing the full path\n\nReturns:\n * The Restic object",
-        "def" : "Restic:setResticPath()",
-        "notes" : [
-
-        ],
-        "signature" : "Restic:setResticPath()",
-        "type" : "Method",
-        "returns" : [
-          " * The Restic object"
-        ],
-        "desc" : "Specifies the full path to the restic executable",
-        "parameters" : [
-          " * path - a string containing the full path",
-          ""
-        ]
-      },
-      {
-        "name" : "setS3Credentials",
-        "stripped_doc" : [
-          "Specifies the S3 credentials used when remote repositories of that type",
-          ""
-        ],
-        "doc" : "Specifies the S3 credentials used when remote repositories of that type\n\nParameters:\n * accessKey - string of the S3 access key\n * secretKey - string of the S3 secret key\n\nReturns:\n * The Restic object",
-        "def" : "Restic:setS3Credentials()",
-        "notes" : [
-
-        ],
-        "signature" : "Restic:setS3Credentials()",
-        "type" : "Method",
-        "returns" : [
-          " * The Restic object"
-        ],
-        "desc" : "Specifies the S3 credentials used when remote repositories of that type",
-        "parameters" : [
-          " * accessKey - string of the S3 access key",
-          " * secretKey - string of the S3 secret key",
-          ""
-        ]
-      },
-      {
-        "name" : "setSudo",
-        "stripped_doc" : [
-          "Specifies whether sudo should be used for restic backups",
-          ""
-        ],
-        "doc" : "Specifies whether sudo should be used for restic backups\n\nParameters:\n * required - true to require administrator privileges\n\nReturns:\n * The Restic object",
-        "def" : "Restic:setSudo()",
-        "notes" : [
-
-        ],
-        "signature" : "Restic:setSudo()",
-        "type" : "Method",
-        "returns" : [
-          " * The Restic object"
-        ],
-        "desc" : "Specifies whether sudo should be used for restic backups",
-        "parameters" : [
-          " * required - true to require administrator privileges",
-          ""
-        ]
-      },
-      {
-        "name" : "showBackupLog",
-        "stripped_doc" : [
-          "Shows the current contents of the backup log in TextEdit",
-          ""
-        ],
-        "doc" : "Shows the current contents of the backup log in TextEdit\n\nParameters:\n * None\n\nReturns:\n * None",
-        "def" : "Restic:showBackupLog()",
-        "notes" : [
-
-        ],
-        "signature" : "Restic:showBackupLog()",
-        "type" : "Method",
-        "returns" : [
-          " * None"
-        ],
-        "desc" : "Shows the current contents of the backup log in TextEdit",
-        "parameters" : [
-          " * None",
-          ""
-        ]
-      },
-      {
-        "name" : "start",
-        "stripped_doc" : [
-          "Starts Restic",
-          ""
-        ],
-        "doc" : "Starts Restic\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
-        "def" : "Restic:start()",
-        "notes" : [
-
-        ],
-        "signature" : "Restic:start()",
-        "type" : "Method",
-        "returns" : [
-          " * The Restic object"
-        ],
-        "desc" : "Starts Restic",
-        "parameters" : [
-          " * None",
-          ""
-        ]
-      },
-      {
-        "name" : "startBackup",
-        "stripped_doc" : [
-          "Begins a new restic backup",
-          ""
-        ],
-        "doc" : "Begins a new restic backup\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
-        "def" : "Restic:startBackup()",
-        "notes" : [
-
-        ],
-        "signature" : "Restic:startBackup()",
-        "type" : "Method",
-        "returns" : [
-          " * The Restic object"
-        ],
-        "desc" : "Begins a new restic backup",
-        "parameters" : [
-          " * None",
-          ""
-        ]
-      },
-      {
-        "name" : "stop",
-        "stripped_doc" : [
-          "Stops Restic",
-          ""
-        ],
-        "doc" : "Stops Restic\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
-        "def" : "Restic:stop()",
-        "notes" : [
-
-        ],
-        "signature" : "Restic:stop()",
-        "type" : "Method",
-        "returns" : [
-          " * The Restic object"
-        ],
-        "desc" : "Stops Restic",
-        "parameters" : [
-          " * None",
-          ""
-        ]
-      },
-      {
-        "name" : "stopBackup",
-        "stripped_doc" : [
-          "Stops the currently-running restic backup",
-          ""
-        ],
-        "doc" : "Stops the currently-running restic backup\n\nParameters:\n * None\n\nReturns:\n * The Restic object",
-        "def" : "Restic:stopBackup()",
-        "notes" : [
-
-        ],
-        "signature" : "Restic:stopBackup()",
-        "type" : "Method",
-        "returns" : [
-          " * The Restic object"
-        ],
-        "desc" : "Stops the currently-running restic backup",
-        "parameters" : [
-          " * None",
-          ""
-        ]
-      }
     ],
     "name" : "Restic"
   }

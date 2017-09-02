@@ -26,7 +26,7 @@ local function getIcon()
     return image
 end
 
-local function getLuaFile(file)
+local function doLuaFile(file)
     return dofile(obj.spoonPath .. "/" .. file)
 end
 
@@ -97,9 +97,12 @@ function obj:init()
     self.settings = {}
     self.log = hs.logger.new(obj.name)
 
-    self.initRepo = getLuaFile("commands/init.lua").new(self, self.log)
-    self.snapshots = getLuaFile("commands/snapshots.lua").new(self, self.log)
-    self.backup = getLuaFile("commands/backup.lua").new(self, self.log)
+    self.exec = doLuaFile("exec.lua").new(self)
+    self.initRepo = doLuaFile("commands/init.lua").new(self)
+    self.backup = doLuaFile("commands/backup.lua").new(self)
+    self.snapshots = doLuaFile("commands/snapshots.lua").new(self, function (val)
+        self.latestBackup = val
+    end)
 end
 
 --- Restic:start()
@@ -112,9 +115,12 @@ end
 --- Returns:
 ---  * The Restic object
 function obj:start()
-    self.log.f("starting %s menu bar", obj.name)
-    self.menuBarItem:returnToMenuBar()
-    self:refreshLatestBackup()
+    if not self:active() then
+        self.log.f("starting %s menu bar", obj.name)
+        self:updateProgress()
+        self:refreshLatestBackup()
+        self.menuBarItem:returnToMenuBar()
+    end
     return self
 end
 
@@ -128,8 +134,11 @@ end
 --- Returns:
 ---  * The Restic object
 function obj:stop()
-    self.log.f("stopping %s menu bar", obj.name)
-    self.menuBarItem:removeFromMenuBar()
+    if self:active() then
+        self.log.f("stopping %s menu bar", obj.name)
+        self.menuBarItem:removeFromMenuBar()
+        self.backup:stop()
+    end
     return self
 end
 
@@ -233,11 +242,12 @@ end
 --- Specifies the directories to backup
 ---
 --- Parameters:
----  * directories - table array of full directory paths
+---  * ... - one or more directory paths
 ---
 --- Returns:
 ---  * The Restic object
-function obj:setBackupDirs(directories)
+function obj:setBackupDirs(...)
+    local directories = { ... }
     for i, path in ipairs(directories) do
         local absPath = hs.fs.pathToAbsolute(path)
         if not absPath then
@@ -251,26 +261,26 @@ function obj:setBackupDirs(directories)
 end
 
 function obj:getBackupDirs()
-    local home = hs.fs.pathToAbsolute("~")
-    return getSetting(self, "BackupDirs", { home })
+    return getSetting(self, "BackupDirs", { "/" })
 end
 
---- Restic:setSudo()
+--- Restic:setExclusionPatterns()
 --- Method
---- Specifies whether sudo should be used for restic backups
+--- Specifies the patterns to exclude from backup
 ---
 --- Parameters:
----  * required - true to require administrator privileges
+---  * ... - one or more exclusion patterns
 ---
 --- Returns:
 ---  * The Restic object
-function obj:setSudo(required)
-    self.log.df("set sudo usage to %s", required)
-    return setSetting(self, "Sudo", required)
+function obj:setExclusionPatterns(...)
+    local patterns = { ... }
+    self.log.df("set exclusion patterns to %s", table.concat(patterns, ", "))
+    return setSetting(self, "ExclusionPatterns", patterns)
 end
 
-function obj:getSudo()
-    return getSetting(self, "Sudo", false)
+function obj:getExclusionPatterns()
+    return getSetting(self, "ExclusionPatterns", {})
 end
 
 --- Restic:createRepo()
@@ -281,11 +291,12 @@ end
 ---  * None
 ---
 --- Returns:
----  * None
+---  * The Restic object
 function obj:createRepo()
     self.log.f("creating new restic repo in %q", self:getRepository())
     self.latestBackup = nil
-    self.initRepo:create()
+    self.initRepo:start()
+    return self
 end
 
 --- Restic:startBackup()
@@ -327,20 +338,20 @@ end
 --- Returns:
 ---  * None
 function obj:showBackupLog()
-    local log = self.backup:getLog()
-    if log and log ~= "" then
-        local task = hs.task.new("/usr/bin/open", nil, { "-f" })
-        task:setInput(log)
-        task:start()
+    local logFile = self.backup:getLogFile()
+    if logFile then
+        hs.task.new("/usr/bin/open", nil, { "-t", logFile }):start()
     else
         self:warn("No backup logs available")
     end
 end
 
+function obj:active()
+    return self.menuBarItem:isInMenubar()
+end
+
 function obj:refreshLatestBackup()
-    self.snapshots:refresh(function (val)
-        self.latestBackup = val
-    end)
+    self.snapshots:start()
 end
 
 function obj:updateProgress(elapsed, percent)
@@ -351,52 +362,6 @@ function obj:updateProgress(elapsed, percent)
     else
         self.menuBarItem:setTitle(nil)
     end
-end
-
-local function buildResticEnv(self)
-    local env = {
-        RESTIC_REPOSITORY = self:getRepository(),
-        RESTIC_PASSWORD = self:getPassword(),
-    }
-    for key, val in pairs(self:getEnvironment()) do
-        env[key] = val
-    end
-    if env.RESTIC_REPOSITORY:sub(1, 3) == "s3:" and not env.AWS_ACCESS_KEY_ID then
-        error("Must call :setS3Credentials() first")
-    end
-    return env
-end
-
-local function quote(str)
-    str = string.gsub(str, [[%\]], [[\\]])
-    str = string.gsub(str, [[%"]], [[\"]])
-    return [["]] .. str .. [["]]
-end
-
-local function join(list)
-    return table.concat(list, " ")
-end
-
-function obj:newResticTask(command, args, onComplete, onOutput)
-    local restic = self:getResticPath()
-    local shell
-    if command.canSudo and self:getSudo() then
-        shell = { "sudo", "-A", restic, command.name }
-    else
-        shell = { restic, command.name }
-    end
-    for i, arg in ipairs(args) do
-        table.insert(shell, quote(arg))
-    end
-
-    local task
-    if onOutput then
-        task = hs.task.new("/bin/sh", onComplete, onOutput, { "-c", join(shell) })
-    else
-        task = hs.task.new("/bin/sh", onComplete, { "-c", join(shell) })
-    end
-    task:setEnvironment(buildResticEnv(self))
-    return task
 end
 
 function obj:warn(msg, ...)
