@@ -8,7 +8,7 @@ obj.__index = obj
 
 -- Metadata
 obj.name = "Restic"
-obj.version = "1.2"
+obj.version = "1.3"
 obj.author = "Ian Good <icgood@gmail.com>"
 obj.homepage = "https://github.com/icgood/Restic.spoon"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
