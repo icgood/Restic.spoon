@@ -20,10 +20,12 @@ local function script_path()
 end
 obj.spoonPath = script_path()
 
-local function getIcon()
-    local image = hs.image.imageFromPath(obj.spoonPath .. "/restic.png")
-    image:size({ w = 16, h = 16 })
-    return image
+local function getIcons()
+    local black = hs.image.imageFromPath(obj.spoonPath .. "/restic.png")
+    local red = hs.image.imageFromPath(obj.spoonPath .. "/restic-red.png")
+    black:size({ w = 16, h = 16 })
+    red:size({ w = 16, h = 16 })
+    return black, red
 end
 
 local function doLuaFile(file)
@@ -69,6 +71,11 @@ local function buildMenu(self)
     else
         local timeStr = getTimeStr(self.latestBackup)
         table.insert(menu, { title = "Latest Backup: " .. timeStr, disabled = true })
+        if self.stale and type(self.latestBackup) == "number" then
+            local daysOld = (hs.timer.secondsSinceEpoch() - self.latestBackup) / hs.timer.days(1)
+            local title = string.format("Backup is %.0f days old!", daysOld)
+            table.insert(menu, { title = title, disabled = true})
+        end
         table.insert(menu, { title = "-" })
         if self.backup:active() then
             table.insert(menu, { title = "Stop Backup", fn = function () self:stopBackup() end })
@@ -90,19 +97,21 @@ local function buildMenu(self)
 end
 
 function obj:init()
-    self.menuBarItem = hs.menubar.new(false)
-	self.menuBarItem:setIcon(getIcon())
-    self.menuBarItem:setMenu(function () return buildMenu(self) end)
-
     self.settings = {}
-    self.log = hs.logger.new(obj.name)
 
+    self.blackIcon, self.redIcon = getIcons()
+    self.log = hs.logger.new(obj.name)
     self.exec = doLuaFile("exec.lua").new(self)
     self.initRepo = doLuaFile("commands/init.lua").new(self)
     self.backup = doLuaFile("commands/backup.lua").new(self)
     self.snapshots = doLuaFile("commands/snapshots.lua").new(self, function (val)
         self.latestBackup = val
+        self:checkBackupAge()
     end)
+
+    self.menuBarItem = hs.menubar.new(false)
+    self.menuBarItem:setIcon(self.blackIcon)
+    self.menuBarItem:setMenu(function () return buildMenu(self) end)
 end
 
 --- Restic:start()
@@ -283,6 +292,24 @@ function obj:getExclusionPatterns()
     return getSetting(self, "ExclusionPatterns", {})
 end
 
+--- Restic:setReminderDelay()
+--- Method
+--- Specifies the reminder delay after the last backup
+---
+--- Parameters:
+---  * days - duration in days
+---
+--- Returns:
+---  * The Restic object
+function obj:setReminderDelay(days)
+    self.log.df("set reminder delay to %s days", days)
+    return setSetting(self, "ReminderDelay", days)
+end
+
+function obj:getReminderDelay()
+    return getSetting(self, "ReminderDelay", 10)
+end
+
 --- Restic:createRepo()
 --- Method
 --- Initializes a new restic repository with `restic init`
@@ -361,6 +388,33 @@ function obj:updateProgress(elapsed, percent)
         self.menuBarItem:setTitle(string.format("%.0f%%", percent))
     else
         self.menuBarItem:setTitle(nil)
+    end
+end
+
+function obj:checkBackupAge()
+    if self.reminder ~= nil then
+        self.reminder:stop()
+    end
+
+    self.stale = nil
+    if not self.latestBackup then
+        self.menuBarItem:setIcon(self.blackIcon)
+    elseif self.latestBackup == "failure" then
+        self.menuBarItem:setIcon(self.redIcon, false)
+    elseif self.latestBackup == "none" then
+        self.menuBarItem:setIcon(self.redIcon, false)
+    else
+        local delay = hs.timer.days(self:getReminderDelay())
+        local remindAfter = self.latestBackup + delay
+        local predicate = function () return hs.timer.secondsSinceEpoch() > remindAfter end
+        local action = function () return self:checkBackupAge() end
+        if predicate() then
+            self.menuBarItem:setIcon(self.redIcon, false)
+            self.stale = true
+        else
+            self.reminder = hs.timer.waitUntil(predicate, action, 60)
+            self.menuBarItem:setIcon(self.blackIcon)
+        end
     end
 end
 
