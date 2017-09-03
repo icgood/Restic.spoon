@@ -304,7 +304,9 @@ end
 ---  * The Restic object
 function obj:setReminderDelay(days)
     self.log.df("set reminder delay to %s days", days)
-    return setSetting(self, "ReminderDelay", days)
+    setSetting(self, "ReminderDelay", days)
+    self:checkBackupAge()
+    return self
 end
 
 function obj:getReminderDelay()
