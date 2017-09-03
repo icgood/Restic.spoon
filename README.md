@@ -20,7 +20,10 @@ spoon.Restic:setS3Credentials("<aws-access-key>", "<aws-secret-key>")
 spoon.Restic:start()
 ```
 
-Finally, reload your Hammerspoon config to see Restic.spoon in the menubar.
+Finally, reload your Hammerspoon config to see Restic.spoon in the menu bar.
+
+See _Help_ in the menu bar for documentation on additional settings and console
+commands.
 
 #### Save/Load
 
