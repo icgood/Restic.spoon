@@ -1,6 +1,8 @@
 # Restic.spoon
 Hammerspoon module to manage restic backups with the menu bar
 
+![Screenshot](screenshot.png)
+
 ### Installation
 Install the spoon with:
 
