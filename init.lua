@@ -21,8 +21,8 @@ end
 obj.spoonPath = script_path()
 
 local function getIcons()
-    local black = hs.image.imageFromPath(obj.spoonPath .. "/restic.png")
-    local red = hs.image.imageFromPath(obj.spoonPath .. "/restic-red.png")
+    local black = hs.image.imageFromPath(obj.spoonPath .. "/resources/restic.png")
+    local red = hs.image.imageFromPath(obj.spoonPath .. "/resources/restic-red.png")
     black:size({ w = 16, h = 16 })
     red:size({ w = 16, h = 16 })
     return black, red
