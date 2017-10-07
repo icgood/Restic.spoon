@@ -68,6 +68,7 @@ local function buildMenu(self)
         table.insert(menu, { title = "Failed to find latest backup!", disabled = true })
         table.insert(menu, { title = "-" })
         table.insert(menu, { title = "Create repository", fn = function () self:createRepo() end })
+        table.insert(menu, { title = "Refresh", fn = function () self:refreshLatestBackup() end })
     else
         local timeStr = getTimeStr(self.latestBackup)
         table.insert(menu, { title = "Latest Backup: " .. timeStr, disabled = true })
