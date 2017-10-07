@@ -42,13 +42,3 @@ the spoon initialization with:
 ```lua
 hs.loadSpoon("Restic"):start()
 ```
-
-## FAQ
-
-#### Why can't I see the backup progress?
-
-Backups are run with administrator privileges, to make sure the entire system
-can be backed up. As such, only root may send a `SIGUSR1` signal to the restic
-process to trigger a progress update. I have an
-[issue](https://github.com/restic/restic/issues/1199) open with restic to
-provide a way for automatic progress updates for non-TTY backups.
