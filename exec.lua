@@ -73,7 +73,13 @@ function obj:newLongTask(shell, onComplete, onOutput, asAdmin)
     local tailOutput = tailFile(outputFile, onOutput)
     local task
 
-    shell = append({ "echo $$ >", pidFile, "; exec 1>", outputFile, "; exec" }, shell)
+    shell = append({
+        "{ sleep 10; while cat", pidFile, "| xargs kill -INFO; do sleep 10; done } & :;",
+        "echo $$ >", pidFile, ";",
+        "exec 1>", outputFile, ";",
+        "exec",
+    }, shell)
+
     task = self:newTask(shell, function (...)
         tailOutput:terminate()
         os.remove(pidFile)
