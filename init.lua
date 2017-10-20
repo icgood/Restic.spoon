@@ -111,9 +111,10 @@ function obj:init()
         self:checkBackupAge()
     end)
 
-    self.menuBarItem = hs.menubar.new(false)
+    self.menuBarItem = hs.menubar.new()
     self.menuBarItem:setIcon(self.blackIcon)
     self.menuBarItem:setMenu(function () return buildMenu(self) end)
+    self.menuBarItem:removeFromMenuBar()
 end
 
 --- Restic:start()
